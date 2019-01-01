@@ -18,6 +18,7 @@ public class MyMenuBar extends MenuBar {
     private MyMenuBar()
     {
         this.add(FileMenu.getInstance());
+        this.add(ViewMenu.getInstance());
         this.add(TestMenu.getInstance());
     }
 

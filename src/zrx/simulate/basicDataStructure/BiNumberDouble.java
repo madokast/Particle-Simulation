@@ -7,8 +7,21 @@ public class BiNumberDouble {
     //单位变换 m 到 mm ，返回新的点，和原来的无关
     public static BiNumberDouble mTOmm(final BiNumberDouble m)
     {
-        BiNumberDouble mm = new BiNumberDouble(m.x*1000,m.y*1000);
-        return mm;
+        return new BiNumberDouble(m.x*1000,m.y*1000);
+    }
+
+    public static void mTOmmSelf(BiNumberDouble biNumberDouble)
+    {
+        biNumberDouble.x*=1000;
+        biNumberDouble.y*=1000;
+    }
+
+    public static void ArrMtoMMSelf(BiNumberDouble[] biNumberDoubles)
+    {
+        for(int i=0;i<biNumberDoubles.length;i++)
+        {
+            BiNumberDouble.mTOmmSelf(biNumberDoubles[i]);
+        }
     }
 
     ///二维矢量点 距离

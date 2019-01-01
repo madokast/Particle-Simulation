@@ -1,22 +1,20 @@
-package zrx.gui.Plot;
+package zrx.gui.PhasePlot;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.Axis;
-import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.util.SortOrder;
 import zrx.simulate.basicDataStructure.BiNumberDouble;
 
 import java.awt.*;
 
-public class JfreeTool {
+public class JfreePlotPhase {
+    //工具类
+    private JfreePlotPhase(){}
 
     public static Image BinumberPlotCloseChartAsImage(int width, int hight, ChartCaption chartCaption, BiNumberDouble[] biNumberDoubles)
     {
@@ -52,8 +50,6 @@ public class JfreeTool {
         plot.setBackgroundPaint(Color.white);
         ((XYPlot) plot).getRenderer().setSeriesPaint(0, Color.black);
 
-
-
         {//坐标轴设置，横轴坐标比例尺一致
             //x轴和y轴
             //DomainAxis-x轴
@@ -82,17 +78,5 @@ public class JfreeTool {
         return chart.createBufferedImage(width,hight);
     }
 
-    public static class ChartCaption
-    {
-        public String title;
-        public String xAxisLable;
-        public String yAxisLable;
 
-        public ChartCaption(String title, String xAxisLable, String yAxisLable)
-        {
-            this.title=title;
-            this.xAxisLable=xAxisLable;
-            this.yAxisLable=yAxisLable;
-        }
-    }
 }

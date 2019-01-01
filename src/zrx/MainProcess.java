@@ -1,10 +1,8 @@
 package zrx;
 
 import zrx.gui.MainWindow;
-import zrx.gui.Plot.PlotPhaseSpace;
 import zrx.gui.informationWindow.InformationTextArea;
 import zrx.gui.informationWindow.InformationWindow;
-import zrx.simulate.tool.Ellipse;
 import zrx.simulate.tool.FormatPrint;
 
 public class MainProcess {
@@ -19,13 +17,13 @@ public class MainProcess {
         }
         catch (InterruptedException ie)
         {
-            ;
+            System.out.println("すこしやすませて、ねぇ");
         }
         InformationWindow.getInstance().setVisible(true);
-        String welcome = FormatPrint.StringsIntoPanel(
+
+        InformationTextArea.getInstance().append(FormatPrint.StringsIntoPanel(
                 "欢迎使用"+NAME+" "+VERSION,
                 "作者：赵润晓"
-        );
-        InformationTextArea.getInstance().append(welcome);
+        ));
     }
 }

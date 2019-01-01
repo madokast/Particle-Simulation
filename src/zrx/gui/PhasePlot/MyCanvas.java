@@ -2,7 +2,7 @@
 * */
 
 
-package zrx.gui.Plot;
+package zrx.gui.PhasePlot;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

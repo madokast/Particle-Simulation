@@ -1,9 +1,13 @@
 package zrx.simulate;
 
-import zrx.simulate.tool.FormatPrint;
+import zrx.gui.RealPlot.DirectionXYZ;
+import zrx.gui.RealPlot.PlotRealSpace;
 import zrx.gui.informationWindow.InformationTextArea;
 import zrx.simulate.basicDataContainer.ImportedMagnet;
-import zrx.simulate.basicDataStructure.*;
+import zrx.simulate.basicDataStructure.MagneticVector;
+import zrx.simulate.basicDataStructure.PositionVector;
+import zrx.simulate.basicDataStructure.TriNumberDouble;
+import zrx.simulate.basicDataStructure.TriNumberInteger;
 import zrx.simulate.tool.SpecialNumber;
 
 import java.io.BufferedReader;
@@ -11,7 +15,8 @@ import java.io.File;
 import java.io.FileReader;
 
 public class ImportMagnet {
-    public static void withDateFilePath(String filePath)
+    public static void importWithDateFilePath(String filePath)
+            throws Exception
     {
 
         File dataFile = new File(filePath);
@@ -19,7 +24,7 @@ public class ImportMagnet {
         //System.out.println("dataFile.exists() = " + dataFile.exists());
 
         try(FileReader fileReader= new FileReader(dataFile);
-        BufferedReader br = new BufferedReader(fileReader))
+            BufferedReader br = new BufferedReader(fileReader))
         {
             InformationTextArea.getInstance().append("Import magnetic field data from " + filePath + "\n");
 
@@ -36,13 +41,11 @@ public class ImportMagnet {
             }
             catch (Exception e)
             {
-                e.printStackTrace();
-                InformationTextArea.getInstance().append("File format error: can not import it\n");
-                ImportedMagnet.clear();
+                throw new Exception("File format error: can not import it");
             }
 
             //calculate the total point number just using x*y*z and allocate storage for magnetic field data
-            allPointNumber = ImportedMagnet.pointTriNumber.x*ImportedMagnet.pointTriNumber.y*ImportedMagnet.pointTriNumber.z;
+            allPointNumber = ImportedMagnet.pointTriNumber.x* ImportedMagnet.pointTriNumber.y* ImportedMagnet.pointTriNumber.z;
             ImportedMagnet.dataArray = new MagneticVector[allPointNumber];
 
             //discard 7 lines to magnetic field data
@@ -151,24 +154,15 @@ public class ImportMagnet {
             ImportedMagnet.positionVectorMin = new PositionVector(xMIN/1000,yMIN/1000,zMIN/1000);
             ImportedMagnet.gapTriNumber = new TriNumberDouble(xGap/1000,yGap/1000,zGap/1000);
 
-            String importedSuccessfullyInformation = FormatPrint.StringsIntoPanel(
-                    "Import magnetic field data successfully",
-                    "The total position number is "+allPointNumber,
-                    "And the imported total position number is "+i,
-                    "The point number along X is "+ImportedMagnet.pointTriNumber.x,
-                    "The point number along Y is "+ImportedMagnet.pointTriNumber.y,
-                    "The point number along Z is "+ImportedMagnet.pointTriNumber.z,
-                    "The MAX position is x= "+ImportedMagnet.positionVectorMax.x+"m    y="+
-                            ImportedMagnet.positionVectorMax.y+"m    z="+ImportedMagnet.positionVectorMax.z+"m",
-                    "The MIN position is x="+ImportedMagnet.positionVectorMin.x+"m    y="+
-                            ImportedMagnet.positionVectorMin.y+"m    z="+ImportedMagnet.positionVectorMin.z+"m",
-                    "And the step length is x="+ImportedMagnet.gapTriNumber.x+"m    y=="+
-                            ImportedMagnet.gapTriNumber.y+"m    y="+ImportedMagnet.gapTriNumber.z+"m"
-            );
-            InformationTextArea.getInstance().append(importedSuccessfullyInformation);
-
-
+            //完成報告
+            if(!ImportedMagnet.isEmpty()&&i== ImportedMagnet.dataArray.length)
+            {
+                ImportedMagnet.importedSuccessfullyInformation();
+                //实空间画图就靠它，一切自动完成，全部心血在此了
+                PlotRealSpace.getInstance().fresh();
+            }
+            else
+                throw new Exception("File is corrupted");
         }
-        catch (Exception e) {e.printStackTrace();}
     }
 }

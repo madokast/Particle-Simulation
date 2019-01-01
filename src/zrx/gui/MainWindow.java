@@ -1,8 +1,9 @@
 package zrx.gui;
 
 import zrx.MainProcess;
-import zrx.gui.Plot.PlotRealSpace;
+import zrx.gui.RealPlot.PlotRealSpace;
 import zrx.gui.menuBar.MyMenuBar;
+import zrx.gui.tool.GUItools;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,14 +35,15 @@ public class MainWindow extends Frame {
         mainWindowBoxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 
         this.setLayout(mainWindowBoxLayout);
-        //this.add(Box.createVerticalStrut(10));
+
         this.add(ButtonsOnTop.getInstance());
         this.add(PlotRealSpace.getInstance());
-        //this.add(Box.createVerticalStrut(10));
+        PlotRealSpace.getInstance().clear();
 
 
-        //fullScreen
-        fullScreen(this);
+        this.pack();
+        GUItools.frameCenter(this);
+
         //closing method
         this.addWindowListener(new WindowAdapter() {
             @Override

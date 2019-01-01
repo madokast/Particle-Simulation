@@ -8,17 +8,17 @@ import zrx.simulate.basicDataContainer.ImportedMagnet;
 import javax.swing.*;
 import java.awt.*;
 
-public class DataNotEmptyErrorDialog extends Dialog {
-    private static DataNotEmptyErrorDialog dataNotEmptyErrorDialog;
-    public static DataNotEmptyErrorDialog getInstance()
+public class MagnetDataNotEmptyErrorDialog extends Dialog {
+    private static MagnetDataNotEmptyErrorDialog dataNotEmptyErrorDialog;
+    public static MagnetDataNotEmptyErrorDialog getInstance()
     {
         if(dataNotEmptyErrorDialog ==null)
-            dataNotEmptyErrorDialog = new DataNotEmptyErrorDialog();
+            dataNotEmptyErrorDialog = new MagnetDataNotEmptyErrorDialog();
 
         return dataNotEmptyErrorDialog;
     }
 
-    private DataNotEmptyErrorDialog()
+    private MagnetDataNotEmptyErrorDialog()
     {
         super(MainWindow.getInstance(),"Data nonempty",true);
 
@@ -36,8 +36,6 @@ public class DataNotEmptyErrorDialog extends Dialog {
         okbutton.addActionListener(oke->{
             InformationTextArea.getInstance().append("Delete existing data\n");
             ImportedMagnet.clear();
-            ImportedMagnet.clear();
-            this.setVisible(false);
             this.setVisible(false);
         });
 
@@ -51,6 +49,5 @@ public class DataNotEmptyErrorDialog extends Dialog {
 
         this.pack();
         GUItools.dialogCenter(this);
-        this.setVisible(true);
     }
 }

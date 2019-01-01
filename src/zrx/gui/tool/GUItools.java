@@ -4,7 +4,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class GUItools {
+public final class GUItools {
+    //工具类
+    private GUItools(){}
     public static void dialogCenter(Dialog dialog)
     {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -12,6 +14,15 @@ public class GUItools {
         dialog.setBounds(screenSize.width/2-dialog.getWidth()/2,
                 screenSize.height/2-dialog.getHeight()/2,
                 dialog.getWidth(),dialog.getHeight());
+    }
+
+    public static void frameCenter(Frame frame)
+    {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+        frame.setBounds(screenSize.width/2-frame.getWidth()/2,
+                screenSize.height/2-frame.getHeight()/2,
+                frame.getWidth(),frame.getHeight());
     }
 
     /**

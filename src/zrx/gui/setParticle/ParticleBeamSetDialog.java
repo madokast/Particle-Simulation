@@ -1,7 +1,8 @@
 package zrx.gui.setParticle;
 
 import zrx.gui.MainWindow;
-import zrx.gui.Plot.PlotPhaseSpace;
+import zrx.gui.PhasePlot.ChartCaption;
+import zrx.gui.PhasePlot.PlotPhaseSpace;
 import zrx.gui.informationWindow.InformationTextArea;
 import zrx.gui.tool.GUItools;
 import zrx.simulate.basicDataContainer.BeamParameter;
@@ -57,6 +58,9 @@ public class ParticleBeamSetDialog extends Dialog {
     //兩個確認欄
     private Checkbox singleParticleOnlyCheckbox = new Checkbox("Set referred particle",true);
     private Checkbox beamParamaterCheckbox = new Checkbox("Set beam parameter",false);
+
+    //枚舉類，用於相圖的XY方向
+    private PhaseSpaceXYSwitch phaseSpaceXYSwitch=PhaseSpaceXYSwitch.PhaseSpaceX;
 
     private void setparticleChoice()
     {
@@ -168,7 +172,11 @@ public class ParticleBeamSetDialog extends Dialog {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                //相空間圖清空
                 PlotPhaseSpace.getInstance().clear();
+                //preview顯示 調回X
+                phaseSpaceXYSwitch=PhaseSpaceXYSwitch.PhaseSpaceX;
+                //關閉
                 setVisible(false);
             }
         });
@@ -204,10 +212,36 @@ public class ParticleBeamSetDialog extends Dialog {
 
             if(BeamParameterTwiss.getInstance().isAlreadySet())
             {
-                PlotPhaseSpace.getInstance().drawEllipse(new Ellipse(BeamParameterTwiss.getInstance().gammaX,
-                        BeamParameterTwiss.getInstance().alphaX*2,
-                        BeamParameterTwiss.getInstance().betaX,
-                        BeamParameterTwiss.getInstance().emitX));
+                if(phaseSpaceXYSwitch==null)
+                    phaseSpaceXYSwitch=PhaseSpaceXYSwitch.PhaseSpaceX;
+
+                if(phaseSpaceXYSwitch==PhaseSpaceXYSwitch.PhaseSpaceX)
+                {
+                    phaseSpaceXYSwitch=PhaseSpaceXYSwitch.PhaseSpaceY;
+
+                    PlotPhaseSpace.getInstance().drawEllipse(new Ellipse(BeamParameterTwiss.getInstance().gammaX,
+                                    BeamParameterTwiss.getInstance().alphaX*2,
+                                    BeamParameterTwiss.getInstance().betaX,
+                                    BeamParameterTwiss.getInstance().emitX),
+                            new ChartCaption("Phase Ellipse Preview-X",
+                                    "x/mm",
+                                    "x\'/mm*mrad")
+                    );
+                }
+                else
+                {
+                    phaseSpaceXYSwitch=PhaseSpaceXYSwitch.PhaseSpaceX;
+
+                    PlotPhaseSpace.getInstance().drawEllipse(new Ellipse(BeamParameterTwiss.getInstance().gammaY,
+                                    BeamParameterTwiss.getInstance().alphaY*2,
+                                    BeamParameterTwiss.getInstance().betaY,
+                                    BeamParameterTwiss.getInstance().emitY),
+                            new ChartCaption("Phase Ellipse Preview-Y",
+                                    "y/mm",
+                                    "y\'/mm*mrad")
+                    );
+                }
+
             }
             else if(BeamParameterTwissGauss.getInstance().isAlreadySet())
             {
@@ -379,4 +413,8 @@ public class ParticleBeamSetDialog extends Dialog {
             "betaY(m)=1.43614\n"+
             "alphaX=-1.89096\n"+
             "alphaY=-1.89096\n";
+
+    enum PhaseSpaceXYSwitch{
+        PhaseSpaceX,PhaseSpaceY;
+    }
 }

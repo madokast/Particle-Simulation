@@ -1,6 +1,7 @@
 package zrx.gui.importMagnet;
 
 import zrx.gui.MainWindow;
+import zrx.gui.informationWindow.InformationTextArea;
 import zrx.gui.tool.GUItools;
 import zrx.simulate.ImportMagnet;
 import zrx.simulate.basicDataContainer.ImportedMagnet;
@@ -27,7 +28,7 @@ public class ImportMagnetButton extends Button {
         this.addActionListener(e->{
             if(!ImportedMagnet.isEmpty())
             {
-                DataNotEmptyErrorDialog.getInstance().setVisible(true);
+                MagnetDataNotEmptyErrorDialog.getInstance().setVisible(true);
             }
             else
             {
@@ -39,8 +40,14 @@ public class ImportMagnetButton extends Button {
                 String filePath = fileDialog.getDirectory()+fileDialog.getFile();
                 if(new File(filePath).exists())
                 {
-                    Runnable runnable = ()->
-                            ImportMagnet.withDateFilePath(fileDialog.getDirectory()+fileDialog.getFile());
+                    Runnable runnable = ()->{
+                        try {
+                            ImportMagnet.importWithDateFilePath(fileDialog.getDirectory()+fileDialog.getFile());
+                        }
+                        catch (Exception ex){
+                            InformationTextArea.getInstance().append(ex.getMessage()+"\n");
+                        }
+                    };
 
                     new Thread(runnable).start();
                 }

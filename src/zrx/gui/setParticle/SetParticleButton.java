@@ -1,6 +1,6 @@
 package zrx.gui.setParticle;
 
-import zrx.gui.Plot.PlotPhaseSpace;
+import zrx.gui.PhasePlot.PlotPhaseSpace;
 
 import java.awt.*;
 

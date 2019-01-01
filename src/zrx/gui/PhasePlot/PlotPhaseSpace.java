@@ -1,4 +1,4 @@
-package zrx.gui.Plot;
+package zrx.gui.PhasePlot;
 
 import zrx.gui.tool.GUItools;
 import zrx.simulate.basicDataStructure.BiNumberDouble;
@@ -30,16 +30,16 @@ public class PlotPhaseSpace extends Panel {
         this.clear();
     }
 
-    public void drawEllipse(Ellipse ellipse)
+    public void drawEllipse(Ellipse ellipse, ChartCaption jfreeChartCaption)
     {
         BufferedImage bufferedImage = new BufferedImage(Width,Height,BufferedImage.TYPE_INT_RGB);
         Graphics graphics = bufferedImage.getGraphics();
-        graphics.drawImage(pointAtEllipseEdgeImage(ellipse,100),0,0,null);
+        graphics.drawImage(pointAtEllipseEdgeImage(ellipse,100,jfreeChartCaption),0,0,null);
 
         myCanvas.getImageAndPrintIt(bufferedImage);
     }
 
-    private static Image pointAtEllipseEdgeImage(Ellipse ellipse,int num)
+    private static Image pointAtEllipseEdgeImage(Ellipse ellipse, int num, ChartCaption jfreeChartCaption)
     {
         BiNumberDouble[] pointsAtEllipseEdge = Ellipse.pointAtEllipseEdge(ellipse,num);
 
@@ -52,10 +52,8 @@ public class PlotPhaseSpace extends Panel {
         }
         */
 
-        return JfreeTool.BinumberPlotCloseChartAsImage(Width, Height,new JfreeTool.ChartCaption(
-                "Phase Ellipse Preview",
-                "x/mm",
-                "y/mm*mrad"),
+        return JfreePlotPhase.BinumberPlotCloseChartAsImage(Width, Height,
+                jfreeChartCaption,
                 pointsAtEllipseEdge
         );
     }
