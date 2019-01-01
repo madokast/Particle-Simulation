@@ -1,0 +1,663 @@
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\button\RunButton.java
+----------------------------------------------------------------------
+package zrx.gui.button;
+
+import java.awt.*;
+
+public class RunButton extends Button {
+    private static RunButton runButton;
+    public static RunButton getInstance()
+    {
+        if(runButton==null)
+            runButton = new RunButton();
+
+        return runButton;
+    }
+
+    private RunButton()
+    {
+        super("Simulate");
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\button\SetParticleButton.java
+----------------------------------------------------------------------
+package zrx.gui.button;
+
+import java.awt.*;
+
+public class SetParticleButton extends Button {
+    private static SetParticleButton setParticleButton;
+    public static SetParticleButton getInstance()
+    {
+        if(setParticleButton==null)
+            setParticleButton = new SetParticleButton();
+
+        return setParticleButton;
+    }
+
+    private SetParticleButton()
+    {
+        super("SetParticle");
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\ButtonsOnTop.java
+----------------------------------------------------------------------
+package zrx.gui;
+
+import zrx.gui.importMagnet.ImportMagnetButton;
+import zrx.gui.button.RunButton;
+import zrx.gui.setParticle.SetParticleButton;
+import zrx.gui.informationWindow.InformationviVsibleButton;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class ButtonsOnTop extends Panel {
+    private static ButtonsOnTop buttonsOnTop;
+    public static ButtonsOnTop getInstance()
+    {
+        if(buttonsOnTop==null)
+            buttonsOnTop = new ButtonsOnTop();
+
+        return buttonsOnTop;
+    }
+
+    private Panel leftPanel = new Panel();
+    private Panel rightPanel = new Panel();
+    {
+        leftPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        rightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+    }
+
+    private ButtonsOnTop()
+    {
+        leftPanel.add(ImportMagnetButton.getInstance());
+        leftPanel.add(SetParticleButton.getInstance());
+        leftPanel.add(RunButton.getInstance());
+
+        rightPanel.add(InformationviVsibleButton.getInstance());
+
+        //prefect 2018-12-26-20:15
+        this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+        this.add(leftPanel);
+        this.add(rightPanel);
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\importMagnet\ImportMagnetButton.java
+----------------------------------------------------------------------
+package zrx.gui.importMagnet;
+
+import zrx.gui.MainWindow;
+
+import java.awt.*;
+
+public class ImportMagnetButton extends Button {
+    private static ImportMagnetButton importMagnetButton;
+    public static ImportMagnetButton getInstance()
+    {
+        if(importMagnetButton ==null)
+            importMagnetButton = new ImportMagnetButton();
+
+        return importMagnetButton;
+    }
+
+    private FileDialog fileDialog;
+
+    private ImportMagnetButton()
+    {
+        super("ImportMagnet");
+        this.addActionListener(e->{
+            fileDialog = new FileDialog(MainWindow.getInstance(),"open magnetic field data file",FileDialog.LOAD);
+
+            fileDialog.setVisible(true);
+            zrx.simulate.ImportMagnet.withDateFilePath(fileDialog.getDirectory()+fileDialog.getFile());
+
+            //need not invisible fileDialog
+            //fileDialog.setVisible(false);
+        });
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\informationWindow\InformationTextArea.java
+----------------------------------------------------------------------
+package zrx.gui.informationWindow;
+
+import java.awt.*;
+
+public class InformationTextArea extends TextArea {
+    private static InformationTextArea informationTextArea;
+    public static InformationTextArea getInstance()
+    {
+        if(informationTextArea==null)
+            informationTextArea = new InformationTextArea();
+
+        return informationTextArea;
+    }
+
+    private InformationTextArea()
+    {
+        super(25,75);
+        this.setEditable(false);
+        this.setFont(new Font(null,Font.PLAIN,18));
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\informationWindow\InformationviVsibleButton.java
+----------------------------------------------------------------------
+package zrx.gui.informationWindow;
+
+import java.awt.*;
+
+public class InformationviVsibleButton extends Button {
+    private static InformationviVsibleButton informationviVsibleButton;
+    public static InformationviVsibleButton getInstance()
+    {
+        if(informationviVsibleButton==null)
+            informationviVsibleButton = new InformationviVsibleButton();
+
+        return informationviVsibleButton;
+    }
+
+    private boolean InformationviVsibleBoolean = false;
+
+    private InformationviVsibleButton()
+    {
+        super("InfoVisible");
+        this.addActionListener(e->{
+            if(InformationviVsibleBoolean)
+                InformationWindow.getInstance().setVisible(InformationviVsibleBoolean=false);
+            else
+                InformationWindow.getInstance().setVisible(InformationviVsibleBoolean=true);
+        });
+    }
+
+    public void setInformationviVsibleBoolean(boolean informationviVsibleBoolean) {
+        InformationviVsibleBoolean = informationviVsibleBoolean;
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\informationWindow\InformationWindow.java
+----------------------------------------------------------------------
+package zrx.gui.informationWindow;
+
+import zrx.gui.MainWindow;
+import zrx.gui.tool.GUItools;
+
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+public class InformationWindow extends Dialog {
+    private static InformationWindow informationWindow;
+    public static InformationWindow getInstance()
+    {
+        if(informationWindow==null)
+            informationWindow = new InformationWindow();
+
+        return informationWindow;
+    }
+
+    private InformationWindow()
+    {
+        super(MainWindow.getInstance(),"Information",false);
+        this.add(InformationTextArea.getInstance());
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                InformationviVsibleButton.getInstance().setInformationviVsibleBoolean(false);
+                setVisible(false);
+            }
+        });
+        this.pack();
+        WindowIntoCenter.dialogCenter(this);
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\MainWindow.java
+----------------------------------------------------------------------
+package zrx.gui;
+
+import zrx.gui.menuBar.MyMenuBar;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+public class MainWindow extends Frame {
+    //singleton
+    private static MainWindow mainWindow;
+    public static MainWindow getInstance()
+    {
+        if(mainWindow==null)
+            mainWindow = new MainWindow();
+
+        return mainWindow;
+    }
+
+    private MainWindow()
+    {
+        //title
+        this.setTitle("Particle Simulation" + " V0.1");
+
+        //MyMenuBar
+        this.setMenuBar(MyMenuBar.getInstance());
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(ButtonsOnTop.getInstance());
+
+        //fullScreen
+        fullScreen(this);
+        //closing method
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        //visible
+        this.setVisible(true);
+    }
+
+    private void fullScreen(Frame frame)
+    {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+        frame.setBounds(0,0,screenSize.width,screenSize.height);
+    }
+
+
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\menuBar\FileMenu.java
+----------------------------------------------------------------------
+package zrx.gui.menuBar;
+
+import javax.xml.validation.TypeInfoProvider;
+import java.awt.*;
+
+public class FileMenu extends Menu {
+    private static FileMenu fileMenu;
+    public static FileMenu getInstance()
+    {
+        if(fileMenu==null)
+            fileMenu = new FileMenu();
+
+        return fileMenu;
+    }
+
+    //exitMenuItem
+    private MenuItem exitMenuItem = new MenuItem("Exit");
+    {
+        exitMenuItem.addActionListener(e->{
+            System.exit(0);
+        });
+    }
+
+    //constructor
+    private FileMenu()
+    {
+        super("File");
+        this.add(exitMenuItem);
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\menuBar\MyMenuBar.java
+----------------------------------------------------------------------
+package zrx.gui.menuBar;
+
+import java.awt.*;
+
+public class MyMenuBar extends MenuBar {
+    //singleton
+    private static MyMenuBar myMenuBar;
+    public static MyMenuBar getInstance()
+    {
+        if(myMenuBar==null)
+            myMenuBar = new MyMenuBar();
+
+        return myMenuBar;
+    }
+
+    private MyMenuBar()
+    {
+        this.add(FileMenu.getInstance());
+    }
+
+
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\gui\tool\WindowIntoCenter.java
+----------------------------------------------------------------------
+package zrx.gui.tool;
+
+import java.awt.*;
+
+public class WindowIntoCenter {
+    public static void dialogCenter(Dialog dialog)
+    {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+        dialog.setBounds(screenSize.width/2-dialog.getWidth()/2,
+                screenSize.height/2-dialog.getHeight()/2,
+                dialog.getWidth(),dialog.getHeight());
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\MainProcess.java
+----------------------------------------------------------------------
+package zrx;
+
+import zrx.gui.MainWindow;
+
+public class MainProcess {
+    public static void main(String[] args) {
+        MainWindow.getInstance();
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\simulate\basicDataContainer\ImportedMagnet.java
+----------------------------------------------------------------------
+package zrx.simulate.basicDataContainer;
+
+import zrx.simulate.basicDataStructure.MagneticFieldValue;
+import zrx.simulate.basicDataStructure.PositionVector;
+import zrx.simulate.basicDataStructure.TriNumberDouble;
+import zrx.simulate.basicDataStructure.TriNumberInteger;
+
+
+public class ImportedMagnet {
+    public static PositionVector positionVectorMax;
+    public static PositionVector positionVectorMin;
+    public static TriNumberDouble gapTriNumber;
+    public static TriNumberInteger pointNumber;
+    public static MagneticFieldValue[] dataArray;
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\simulate\basicDataStructure\MagneticFieldValue.java
+----------------------------------------------------------------------
+package zrx.simulate.basicDataStructure;
+
+public class MagneticFieldValue {
+    public MagneticVector magneticVector;
+    public PositionVector positionVector;
+
+    public MagneticFieldValue(PositionVector positionVector,MagneticVector magneticVector) {
+        this.magneticVector = magneticVector;
+        this.positionVector = positionVector;
+    }
+
+    public void print()
+    {
+        System.out.println("MagneticFieldValue: ");
+        magneticVector.print();
+        positionVector.print();
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\simulate\basicDataStructure\MagneticVector.java
+----------------------------------------------------------------------
+package zrx.simulate.basicDataStructure;
+
+public class MagneticVector extends TriNumberDouble {
+    public MagneticVector(double x, double y, double z) {
+        super(x, y, z);
+    }
+
+    @Override
+    public void print() {
+        System.out.print("MagneticVector: ");
+        super.print();
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\simulate\basicDataStructure\PositionVector.java
+----------------------------------------------------------------------
+package zrx.simulate.basicDataStructure;
+
+public class PositionVector extends TriNumberDouble {
+    public PositionVector(double x, double y, double z) {
+        super(x, y, z);
+    }
+
+    @Override
+    public void print() {
+        System.out.print("PositionVector: ");
+        super.print();
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\simulate\basicDataStructure\TriNumberDouble.java
+----------------------------------------------------------------------
+package zrx.simulate.basicDataStructure;
+
+public class TriNumberDouble {
+    public double x;
+    public double y;
+    public double z;
+
+    public TriNumberDouble(){}
+
+    public TriNumberDouble(double x,double y,double z)
+    {
+        this.x=x;
+        this.y=y;
+        this.z=z;
+    }
+
+    public void print()
+    {
+        System.out.printf("%e\t%e\t%e\n",x,y,z);
+    }
+
+    @Override
+    public int hashCode() {
+        long lx = Double.doubleToLongBits(x);
+        long ly = Double.doubleToLongBits(y);
+        long lz = Double.doubleToLongBits(z);
+        return (int)(lx^(lx>>>32))+(int)(ly^(ly>>>32))+(int)(lz^(lz>>>32));
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\simulate\basicDataStructure\TriNumberInteger.java
+----------------------------------------------------------------------
+package zrx.simulate.basicDataStructure;
+
+public class TriNumberInteger {
+    public int x;
+    public int y;
+    public int z;
+
+    public TriNumberInteger(){}
+
+    public TriNumberInteger(int x,int y,int z)
+    {
+        this.x=x;
+        this.y=y;
+        this.z=z;
+    }
+
+    public void print()
+    {
+        System.out.printf("%d\t%d\t%d\n",x,y,z);
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\simulate\basicDataStructure\VelocityVector.java
+----------------------------------------------------------------------
+package zrx.simulate.basicDataStructure;
+
+public class VelocityVector extends TriNumberDouble {
+    @Override
+    public void print() {
+        System.out.print("VelocityVector: ");
+        super.print();
+    }
+}
+----------------------------------------------------------------------
+
+
+
+D:\Desktop\粒子仿真\particleSimulation\src\zrx\simulate\ImportMagnet.java
+----------------------------------------------------------------------
+package zrx.simulate;
+
+import zrx.gui.informationWindow.InformationTextArea;
+import zrx.simulate.basicDataContainer.ImportedMagnet;
+import zrx.simulate.basicDataStructure.MagneticFieldValue;
+import zrx.simulate.basicDataStructure.MagneticVector;
+import zrx.simulate.basicDataStructure.PositionVector;
+import zrx.simulate.basicDataStructure.TriNumberInteger;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
+public class ImportMagnet {
+    public static void withDateFilePath(String filePath)
+    {
+        File dataFile = new File(filePath);
+        //System.out.println("filePath = " + filePath);
+        //System.out.println("dataFile.exists() = " + dataFile.exists());
+
+        try(FileReader fileReader= new FileReader(dataFile);
+        BufferedReader br = new BufferedReader(fileReader))
+        {
+            InformationTextArea.getInstance().append("Import magnetic field data from " + filePath + "\n");
+
+            String str;
+            String[] strArr;
+            int allPointNumber;
+
+            //read the first line. it contains the data of point number along 3 axes
+            //in my data file the first line is [ 901 13 224 2]. it is z,y,x axis point number respectively.
+            strArr=br.readLine().split("\\s+");
+            ImportedMagnet.pointNumber = new TriNumberInteger(Integer.parseInt(strArr[3]),
+                    Integer.parseInt(strArr[2]),Integer.parseInt(strArr[1]));
+            InformationTextArea.getInstance().append("the point number along X is "+ImportedMagnet.pointNumber.x+"\n");
+            InformationTextArea.getInstance().append("the point number along Y is "+ImportedMagnet.pointNumber.y+"\n");
+            InformationTextArea.getInstance().append("the point number along Z is "+ImportedMagnet.pointNumber.z+"\n");
+
+            allPointNumber = ImportedMagnet.pointNumber.x*ImportedMagnet.pointNumber.y*ImportedMagnet.pointNumber.z;
+            InformationTextArea.getInstance().append("the total point number is "+allPointNumber+"\n");
+            ImportedMagnet.dataArray = new MagneticFieldValue[allPointNumber];
+
+            //discard 7 lines to magnetic field data
+            for(int i=0;i<7;i++)
+                br.readLine();
+
+            //read magnetic field data
+            int i=0;
+            double completion=0.00;
+            StringBuilder stringBuilder = new StringBuilder();
+            {
+                stringBuilder.append("Progress bar: ");
+                stringBuilder.append("[");
+                for(int ii=0;ii<(int)(i/allPointNumber*20);ii++){stringBuilder.append("=");}
+                for(int ii=0;ii<20-(int)(i/allPointNumber*20);ii++){stringBuilder.append("+");}
+                stringBuilder.append("]");
+
+                InformationTextArea.getInstance().append(stringBuilder.toString());
+            }
+            while((str=br.readLine())!=null)
+            {
+                strArr=str.split("\\s+");
+                ImportedMagnet.dataArray[i] = new MagneticFieldValue(
+                        new PositionVector(Double.parseDouble(strArr[1]),
+                                Double.parseDouble(strArr[2]),Double.parseDouble(strArr[3])),
+                        new MagneticVector(Double.parseDouble(strArr[4]),
+                                Double.parseDouble(strArr[5]),Double.parseDouble(strArr[6]))
+                );
+
+                if(i==(int)(allPointNumber*completion))
+                {
+
+                    int end = InformationTextArea.getInstance().getCaretPosition();
+                    System.out.println("end = " + end);
+
+                    stringBuilder = new StringBuilder();
+                    stringBuilder.append("[");
+                    for(int ii=0;ii<(int)(completion*20);ii++){stringBuilder.append("=");}
+                    for(int ii=0;ii<20-(int)(completion*20);ii++){stringBuilder.append("+");}
+                    stringBuilder.append("]");
+
+                    InformationTextArea.getInstance().replaceRange(stringBuilder.toString(),end-stringBuilder.length(),end);
+
+                    completion+=0.05;
+                }
+
+                i++;
+            }
+
+            {//finish Importing
+                int end = InformationTextArea.getInstance().getCaretPosition();
+                stringBuilder = new StringBuilder();
+
+                stringBuilder.append("[");
+                for(int ii=0;ii<20;ii++){stringBuilder.append("=");}
+                stringBuilder.append("]");
+                InformationTextArea.getInstance().replaceRange(stringBuilder.toString(),end-stringBuilder.length(),end);
+            }
+            InformationTextArea.getInstance().append("\nImporting finished with " + i + " point data\n");
+        }
+        catch (Exception e) {e.printStackTrace();}
+    }
+}
+----------------------------------------------------------------------
