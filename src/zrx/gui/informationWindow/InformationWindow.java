@@ -21,6 +21,7 @@ public class InformationWindow extends Dialog {
     {
         super(MainWindow.getInstance(),"Information",false);
         this.add(InformationTextArea.getInstance());
+        this.setIconImage(GUItools.getIcon());
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -29,7 +30,5 @@ public class InformationWindow extends Dialog {
         });
         this.pack();
         GUItools.dialogCenter(this);
-
-        this.setVisible(true);
     }
 }

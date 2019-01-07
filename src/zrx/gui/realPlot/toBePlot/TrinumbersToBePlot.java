@@ -1,14 +1,14 @@
-package zrx.gui.RealPlot;
+package zrx.gui.realPlot.toBePlot;
 
-import zrx.simulate.basicDataContainer.ImportedMagnet;
+import zrx.gui.realPlot.DirectionXYZ2D;
+import zrx.gui.realPlot.PlotWay;
+import zrx.gui.menuBar.viewMenuItem.DirectionMenu;
 import zrx.simulate.basicDataStructure.BiNumberDouble;
 import zrx.simulate.basicDataStructure.TriNumberDouble;
 
 import java.awt.*;
 
-import static zrx.gui.RealPlot.DirectionXYZ.YZ;
-
-public class TrinumbersToBePlot {
+public class TrinumbersToBePlot extends SToBePlot {
     private TriNumberDouble[] triNumberDoubles;
     private String name;
     private Color color;
@@ -21,13 +21,27 @@ public class TrinumbersToBePlot {
         this.plotWay = plotWay;
     }
 
-    public static BiNumberDouble[] trisToBinumbers(TrinumbersToBePlot trinumbersToBePlot,DirectionXYZ directionXYZ)
+    public static BinumbersToBePlot trinumbersToBePlotToBi(TrinumbersToBePlot t)
+    {
+        BiNumberDouble[] biNumberDoubles = new BiNumberDouble[t.triNumberDoubles.length];
+        for(int i=0;i<t.triNumberDoubles.length;i++)
+            biNumberDoubles[i]=t.triNumberDoubles[i].projection(DirectionMenu.getInstance().getDirectionXYZ2D());
+
+        {
+            //System.out.println("--------TrinumbersToBePlot------------");
+            //System.out.println("t = " + t);
+        }
+
+        return new BinumbersToBePlot(biNumberDoubles,t.name,t.color,t.plotWay);
+    }
+
+    public static BiNumberDouble[] trisToBinumbers(TrinumbersToBePlot trinumbersToBePlot, DirectionXYZ2D directionXYZ2D)
     {
         //这代码，令人窒息
         //2019年1月1日
         BiNumberDouble[] biNumberDoubles = new BiNumberDouble[trinumbersToBePlot.triNumberDoubles.length];
 
-        switch (directionXYZ)
+        switch (directionXYZ2D)
         {
             case XY:
                 for(int i=0;i<trinumbersToBePlot.triNumberDoubles.length;i++)
@@ -81,6 +95,7 @@ public class TrinumbersToBePlot {
         return "TrinumbersToBePlot{" +
                 "name='" + name + '\'' +
                 ", color=" + color +
+                ", plotWay=" + plotWay +
                 '}';
     }
 
@@ -100,7 +115,4 @@ public class TrinumbersToBePlot {
         return plotWay;
     }
 
-    enum PlotWay{
-        CloseLine,Line,Scatter;
-    }
 }

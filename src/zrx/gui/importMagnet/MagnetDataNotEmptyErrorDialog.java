@@ -47,6 +47,8 @@ public class MagnetDataNotEmptyErrorDialog extends Dialog {
         this.add(textField);
         this.add(buttonsPanel);
 
+        this.setIconImage(GUItools.getErrorIcon());
+
         this.pack();
         GUItools.dialogCenter(this);
     }

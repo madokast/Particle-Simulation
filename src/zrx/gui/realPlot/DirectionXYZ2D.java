@@ -1,9 +1,9 @@
-package zrx.gui.RealPlot;
+package zrx.gui.realPlot;
 
 import zrx.gui.setParticle.ErrorDialog;
 
 //繪圖方向
-public enum DirectionXYZ {
+public enum DirectionXYZ2D {
     XY,XZ,YX,YZ,ZX,ZY;
 
     public String getFirst()
@@ -21,7 +21,7 @@ public enum DirectionXYZ {
 
         }
 
-        ErrorDialog.getInstance().setErrorInformationToLabelAndVisible("Error in DirectionXYZ.getFirst");
+        ErrorDialog.getInstance().setErrorInformationToLabelAndVisible("Error in DirectionXYZ2D.getFirst");
         return "X";
     }
 
@@ -40,7 +40,7 @@ public enum DirectionXYZ {
 
         }
 
-        ErrorDialog.getInstance().setErrorInformationToLabelAndVisible("Error in DirectionXYZ.getSecond");
+        ErrorDialog.getInstance().setErrorInformationToLabelAndVisible("Error in DirectionXYZ2D.getSecond");
         return "X";
     }
 }

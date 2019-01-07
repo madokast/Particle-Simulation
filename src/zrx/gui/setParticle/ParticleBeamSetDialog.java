@@ -1,17 +1,16 @@
 package zrx.gui.setParticle;
 
 import zrx.gui.MainWindow;
-import zrx.gui.PhasePlot.ChartCaption;
-import zrx.gui.PhasePlot.PlotPhaseSpace;
+import zrx.gui.previewPhasePlot.ChartCaption;
+import zrx.gui.previewPhasePlot.PreviewPlotPhaseSpace;
 import zrx.gui.informationWindow.InformationTextArea;
 import zrx.gui.tool.GUItools;
 import zrx.simulate.basicDataContainer.BeamParameter;
 import zrx.simulate.basicDataContainer.BeamParameterTwiss;
-import zrx.simulate.basicDataContainer.BeamParameterTwissGauss;
 import zrx.simulate.basicDataContainer.ReferredParticle;
 import zrx.simulate.basicDataStructure.PositionVector;
 import zrx.simulate.basicDataStructure.VectorDouble;
-import zrx.simulate.tool.Ellipse;
+import zrx.simulate.Geometry.Ellipse;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +61,7 @@ public class ParticleBeamSetDialog extends Dialog {
     //枚舉類，用於相圖的XY方向
     private PhaseSpaceXYSwitch phaseSpaceXYSwitch=PhaseSpaceXYSwitch.PhaseSpaceX;
 
-    private void setparticleChoice()
+    private void setParticleChoice()
     {
         particleChoice.add("ParticleType...");
         particleChoice.add("Proton");
@@ -104,7 +103,7 @@ public class ParticleBeamSetDialog extends Dialog {
     private void setLeftPanel()
     {
         //Choice組件 用於參考粒子設定 選擇具體項，則對應的TextArea打印出提示符
-        setparticleChoice();
+        setParticleChoice();
 
         //Choice組件 用於束流參數設定 選擇具體項，則對應的TextArea打印出提示符
         setBeamParamaterChoice();
@@ -153,7 +152,7 @@ public class ParticleBeamSetDialog extends Dialog {
         setLeftPanel();
         mainPanel.add(leftPanel);
         mainPanel.add(Box.createHorizontalStrut(19));
-        mainPanel.add(PlotPhaseSpace.getInstance());
+        mainPanel.add(PreviewPlotPhaseSpace.getInstance());
         mainPanel.add(Box.createHorizontalStrut(18));
     }
 
@@ -169,11 +168,13 @@ public class ParticleBeamSetDialog extends Dialog {
         this.add(mainPanel);
         this.add(Box.createVerticalStrut(10));
 
+        this.setIconImage(GUItools.getIcon());
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 //相空間圖清空
-                PlotPhaseSpace.getInstance().clear();
+                PreviewPlotPhaseSpace.getInstance().clear();
                 //preview顯示 調回X
                 phaseSpaceXYSwitch=PhaseSpaceXYSwitch.PhaseSpaceX;
                 //關閉
@@ -219,7 +220,7 @@ public class ParticleBeamSetDialog extends Dialog {
                 {
                     phaseSpaceXYSwitch=PhaseSpaceXYSwitch.PhaseSpaceY;
 
-                    PlotPhaseSpace.getInstance().drawEllipse(new Ellipse(BeamParameterTwiss.getInstance().gammaX,
+                    PreviewPlotPhaseSpace.getInstance().drawEllipse(new Ellipse(BeamParameterTwiss.getInstance().gammaX,
                                     BeamParameterTwiss.getInstance().alphaX*2,
                                     BeamParameterTwiss.getInstance().betaX,
                                     BeamParameterTwiss.getInstance().emitX),
@@ -232,7 +233,7 @@ public class ParticleBeamSetDialog extends Dialog {
                 {
                     phaseSpaceXYSwitch=PhaseSpaceXYSwitch.PhaseSpaceX;
 
-                    PlotPhaseSpace.getInstance().drawEllipse(new Ellipse(BeamParameterTwiss.getInstance().gammaY,
+                    PreviewPlotPhaseSpace.getInstance().drawEllipse(new Ellipse(BeamParameterTwiss.getInstance().gammaY,
                                     BeamParameterTwiss.getInstance().alphaY*2,
                                     BeamParameterTwiss.getInstance().betaY,
                                     BeamParameterTwiss.getInstance().emitY),
@@ -242,10 +243,6 @@ public class ParticleBeamSetDialog extends Dialog {
                     );
                 }
 
-            }
-            else if(BeamParameterTwissGauss.getInstance().isAlreadySet())
-            {
-                //
             }
             else
             {
@@ -313,7 +310,7 @@ public class ParticleBeamSetDialog extends Dialog {
         //ParticleType  StaticMass(Kg/MeV)  chargeQuantity
         ReferredParticle.getInstance().setParticleTypeStaticMassAndChargeQuantity("proton");
 
-        //positionVector
+        //p
         ReferredParticle.getInstance().positionVector = new PositionVector(
                 Double.parseDouble(strLine[2].substring(strLine[2].indexOf("=")+1))/1000,
                 Double.parseDouble(strLine[3].substring(strLine[3].indexOf("=")+1))/1000,
@@ -390,9 +387,9 @@ public class ParticleBeamSetDialog extends Dialog {
 
     private String protonDBASetPrompt = "Specify a proton in the following format:\n"+
             "Kinetic energy(MeV)=70.0\n"+
-            "Absolute position x(mm)=4.540381057097854e+02\n"+
+            "Absolute position x(mm)=4.540381e+02\n"+
             "Absolute position y(mm)=0.0\n"+
-            "Absolute position z(mm)=2.213582932388906e+03\n"+
+            "Absolute position z(mm)=2.213583e+03\n"+
             "Set Direction of movement, using a vector along it\n"+
             "Direction of movement x=1.0\n"+
             "Direction of movement y=0.0\n"+

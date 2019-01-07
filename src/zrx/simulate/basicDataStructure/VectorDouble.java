@@ -6,12 +6,15 @@ public class VectorDouble extends TriNumberDouble {
         super(x,y,z);
     }
 
-    public VectorDouble(VelocityVector v)
+    public VectorDouble(final VelocityVector v)
     {
         this(v.x,v.y,v.z);
     }
 
-    public double length() { return Math.sqrt(x*x+y*y+z*z); }
+    public VectorDouble(final TriNumberDouble v)
+    {
+        this(v.x,v.y,v.z);
+    }
 
     public void NormalizeSelf()
     {
@@ -20,11 +23,6 @@ public class VectorDouble extends TriNumberDouble {
         this.x = this.x/length;
         this.y = this.y/length;
         this.z = this.z/length;
-    }
-
-    public static VectorDouble scalarMultipVct(double scalar,VectorDouble vct)
-    {
-        return new VectorDouble(scalar*vct.x,scalar*vct.y,scalar*vct.z);
     }
 }
 

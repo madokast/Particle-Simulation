@@ -1,27 +1,32 @@
-package zrx.gui.PhasePlot;
+package zrx.gui.previewPhasePlot;
 
 import zrx.gui.tool.GUItools;
 import zrx.simulate.basicDataStructure.BiNumberDouble;
-import zrx.simulate.tool.Ellipse;
+import zrx.simulate.Geometry.Ellipse;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class PlotPhaseSpace extends Panel {
-    private static PlotPhaseSpace plotPhaseSpace;
-    public static PlotPhaseSpace getInstance()
+public class PreviewPlotPhaseSpace extends Panel {
+    //单一实例
+    private static PreviewPlotPhaseSpace previewPlotPhaseSpace;
+    public static PreviewPlotPhaseSpace getInstance()
     {
-        if(plotPhaseSpace==null)
-            plotPhaseSpace=new PlotPhaseSpace();
+        if(previewPlotPhaseSpace ==null)
+            previewPlotPhaseSpace =new PreviewPlotPhaseSpace();
 
-        return plotPhaseSpace;
+        return previewPlotPhaseSpace;
     }
 
-    private static final int Width = 600;
-    private static final int Height = 600;
+    //绘图大小
+    private static final int Width = (int)((double)GUItools.getScreenWidth()*0.4);
+    private static final int Height = Width;
 
+    //画板
     private static MyCanvas myCanvas = new MyCanvas();
-    private PlotPhaseSpace()
+
+    //构造器
+    private PreviewPlotPhaseSpace()
     {
         myCanvas.setBounds(0,0,Width,Height);
         this.add(myCanvas,BorderLayout.CENTER);
@@ -30,6 +35,7 @@ public class PlotPhaseSpace extends Panel {
         this.clear();
     }
 
+    //画图方法
     public void drawEllipse(Ellipse ellipse, ChartCaption jfreeChartCaption)
     {
         BufferedImage bufferedImage = new BufferedImage(Width,Height,BufferedImage.TYPE_INT_RGB);
@@ -39,6 +45,7 @@ public class PlotPhaseSpace extends Panel {
         myCanvas.getImageAndPrintIt(bufferedImage);
     }
 
+    //内部方法
     private static Image pointAtEllipseEdgeImage(Ellipse ellipse, int num, ChartCaption jfreeChartCaption)
     {
         BiNumberDouble[] pointsAtEllipseEdge = Ellipse.pointAtEllipseEdge(ellipse,num);
@@ -52,12 +59,13 @@ public class PlotPhaseSpace extends Panel {
         }
         */
 
-        return JfreePlotPhase.BinumberPlotCloseChartAsImage(Width, Height,
+        return JfreePreviewPlotPhase.BiNumberPlotCloseChartAsImage(Width, Height,
                 jfreeChartCaption,
                 pointsAtEllipseEdge
         );
     }
 
+    //清屏
     public void clear()
     {
         BufferedImage bufferedImage = new BufferedImage(Width,Height,BufferedImage.TYPE_INT_RGB);

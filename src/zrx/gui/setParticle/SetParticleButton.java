@@ -1,6 +1,6 @@
 package zrx.gui.setParticle;
 
-import zrx.gui.PhasePlot.PlotPhaseSpace;
+import zrx.gui.previewPhasePlot.PreviewPlotPhaseSpace;
 
 import java.awt.*;
 
@@ -18,7 +18,7 @@ public class SetParticleButton extends Button {
     {
         super("SetParticle");
         this.addActionListener(e->{
-            PlotPhaseSpace.getInstance().clear();
+            PreviewPlotPhaseSpace.getInstance().clear();
             ParticleBeamSetDialog.getInstance().setVisible(true);
         });
     }

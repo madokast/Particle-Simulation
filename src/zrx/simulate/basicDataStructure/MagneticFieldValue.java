@@ -1,18 +1,18 @@
 package zrx.simulate.basicDataStructure;
 
 public class MagneticFieldValue {
-    public MagneticVector magneticVector;
-    public PositionVector positionVector;
+    public MagneticVector m;
+    public PositionVector p;
 
-    public MagneticFieldValue(PositionVector positionVector,MagneticVector magneticVector) {
-        this.magneticVector = new MagneticVector(magneticVector);
-        this.positionVector = new PositionVector(positionVector);
+    public MagneticFieldValue(PositionVector p, MagneticVector m) {
+        this.m = new MagneticVector(m);
+        this.p = new PositionVector(p);
     }
 
     public void print()
     {
         System.out.println("MagneticFieldValue: ");
-        magneticVector.print();
-        positionVector.print();
+        m.print();
+        p.print();
     }
 }

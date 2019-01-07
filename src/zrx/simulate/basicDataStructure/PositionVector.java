@@ -10,6 +10,18 @@ public class PositionVector extends VectorDouble {
         this(p.x,p.y,p.z);
     }
 
+    public PositionVector(TriNumberDouble v)
+    {
+        this(v.x,v.y,v.z);
+    }
+
+    public void addSelf(TriNumberDouble d)
+    {
+        this.x+=d.x;
+        this.y+=d.y;
+        this.z+=d.z;
+    }
+
     @Override
     public void print() {
         System.out.print("PositionVector: ");

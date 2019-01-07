@@ -1,5 +1,6 @@
 package zrx.gui.setParticle;
 
+import zrx.gui.MainWindow;
 import zrx.gui.tool.GUItools;
 
 import javax.swing.*;
@@ -27,10 +28,12 @@ public class ErrorDialog extends Dialog{
 
     private ErrorDialog()
     {
-        super(ParticleBeamSetDialog.getInstance(),"Error",true);
+        super(MainWindow.getInstance(),"Error",true);
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.add(label);
         this.add(OKbutton);
+
+        this.setIconImage(GUItools.getErrorIcon());
 
         this.pack();
         GUItools.dialogCenter(this);

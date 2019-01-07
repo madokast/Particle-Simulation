@@ -14,6 +14,11 @@ public class TriNumberInteger {
         this.z=z;
     }
 
+    public int totalNumber()
+    {
+        return this.x*this.y*this.z;
+    }
+
     public void print()
     {
         System.out.printf("%d\t%d\t%d\n",x,y,z);

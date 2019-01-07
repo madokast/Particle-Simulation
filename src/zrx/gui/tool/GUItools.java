@@ -1,12 +1,36 @@
 package zrx.gui.tool;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 public final class GUItools {
-    //工具类
     private GUItools(){}
+    //工具类
+
+    public static Image getIcon()
+    {
+        try {
+            return ImageIO.read(new File("image/icon.png"));
+        }
+        catch (Exception e){e.printStackTrace();}
+
+        return null;
+    }
+
+    public static Image getErrorIcon()
+    {
+        try {
+            return ImageIO.read(new File("image/errorIcon.png"));
+        }
+        catch (Exception e){e.printStackTrace();}
+
+        return null;
+    }
+
     public static void dialogCenter(Dialog dialog)
     {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -58,5 +82,29 @@ public final class GUItools {
                 frame.setVisible(false);
             }
         });
+    }
+
+    public static int getScreenWidth()
+    {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+
+        return screenSize.width;
+    }
+
+    public static int getScreenHeight()
+    {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+
+        return screenSize.height;
+    }
+
+    public static void sleepMS(int ms)
+    {
+        try {
+            Thread.currentThread().sleep(ms);
+        }
+        catch (Exception e){}
     }
 }

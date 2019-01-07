@@ -1,4 +1,4 @@
-package zrx.gui.PhasePlot;
+package zrx.gui.previewPhasePlot;
 
 public class ChartCaption
 {

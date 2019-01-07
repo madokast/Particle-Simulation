@@ -10,6 +10,11 @@ public class MagneticVector extends VectorDouble {
         this(m.x,m.y,m.z);
     }
 
+    public MagneticVector(TriNumberDouble v)
+    {
+        this(v.x,v.y,v.z);
+    }
+
     @Override
     public void print() {
         System.out.print("MagneticVector: ");

@@ -1,6 +1,7 @@
-package zrx.simulate.tool;
+package zrx.simulate.Geometry;
 
 import zrx.simulate.basicDataStructure.BiNumberDouble;
+import zrx.simulate.tool.SpecialNumber;
 
 public class Ellipse {
     //椭圆方程Ax^2+Bxy+Cy^2=D
@@ -14,6 +15,86 @@ public class Ellipse {
         B = b;
         C = c;
         D = d;
+    }
+
+    //获得椭圆的长轴倾角，弧度制
+    @Deprecated
+    public static double angle(Ellipse e)
+    {
+        BiNumberDouble biNumberDouble = new BiNumberDouble(0.0,0.0);
+
+        for(BiNumberDouble t:pointAtEllipseEdge(e,1000))
+        {
+            if(biNumberDouble.length()<t.length())
+            {
+                biNumberDouble=t;
+            }
+        }
+
+        return BiNumberDouble.getRotateAngleByBiNumber(biNumberDouble);
+    }
+
+    //椭圆长轴长度
+    @Deprecated
+    public static double longAxis(Ellipse e)
+    {
+        double halfLongAxis = 0.0;
+
+        for(BiNumberDouble t:pointAtEllipseEdge(e,1000))
+        {
+            if(halfLongAxis<t.length())
+            {
+                halfLongAxis=t.length();
+            }
+        }
+
+        return halfLongAxis*2;
+    }
+
+    //椭圆常用参数 长轴倾角 长轴 短轴 一次性高效获得
+    public static EllipseParameter getEllipseParameter(final Ellipse e)
+    {
+        BiNumberDouble biNumberDouble = new BiNumberDouble(0.0,0.0);
+        double halfLongAxis = 0.0;
+        double halfshortAxis = SpecialNumber.MAXrealNonnegative;
+        for(BiNumberDouble t:pointAtEllipseEdge(e,1000))
+        {
+            if(halfLongAxis<t.length())
+            {
+                halfLongAxis=t.length();
+            }
+            if(halfshortAxis>t.length())
+            {
+                halfshortAxis=t.length();
+            }
+            if(biNumberDouble.length()<t.length())
+            {
+                biNumberDouble=t;
+            }
+        }
+
+        return new EllipseParameter(
+                BiNumberDouble.getRotateAngleByBiNumber(biNumberDouble),
+                halfLongAxis*2,
+                halfshortAxis*2
+        );
+    }
+
+    //椭圆短轴
+    @Deprecated
+    public static double shortAxis(Ellipse e)
+    {
+            double halfshortAxis = SpecialNumber.MAXrealNonnegative;
+
+            for(BiNumberDouble t:pointAtEllipseEdge(e,1000))
+            {
+                if(halfshortAxis>t.length())
+                {
+                    halfshortAxis=t.length();
+                }
+            }
+
+            return halfshortAxis*2;
     }
 
     //椭圆圆周上均匀分布的点，数目num

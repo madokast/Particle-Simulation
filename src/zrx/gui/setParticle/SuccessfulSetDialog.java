@@ -1,5 +1,6 @@
 package zrx.gui.setParticle;
 
+import zrx.gui.realPlot.PlotRealSpace;
 import zrx.gui.tool.GUItools;
 
 import javax.swing.*;
@@ -21,6 +22,7 @@ public class SuccessfulSetDialog extends Dialog {
     {
         OKbutton.addActionListener(e->{
             successfulSetDialog.getInstance().setVisible(false);
+            PlotRealSpace.getInstance().fresh();
         });
     }
 
@@ -30,6 +32,8 @@ public class SuccessfulSetDialog extends Dialog {
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.add(label);
         this.add(OKbutton);
+
+        this.setIconImage(GUItools.getIcon());
 
         this.pack();
         GUItools.dialogCenter(this);

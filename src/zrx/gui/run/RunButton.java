@@ -1,4 +1,4 @@
-package zrx.gui.button;
+package zrx.gui.run;
 
 import java.awt.*;
 
@@ -15,5 +15,8 @@ public class RunButton extends Button {
     private RunButton()
     {
         super("Simulate");
+        this.addActionListener(e->{
+            RunDialog.getInstance().setVisible(true);
+        });
     }
 }

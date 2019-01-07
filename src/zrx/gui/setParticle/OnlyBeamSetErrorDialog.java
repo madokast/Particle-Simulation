@@ -30,6 +30,8 @@ public class OnlyBeamSetErrorDialog extends Dialog {
         this.add(new Label("Can not set beam parameter in isolation"));
         this.add(OKbutton);
 
+        this.setIconImage(GUItools.getErrorIcon());
+
         this.pack();
         GUItools.dialogCenter(this);
     }

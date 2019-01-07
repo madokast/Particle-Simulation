@@ -3,7 +3,6 @@ package zrx.gui.importMagnet;
 import zrx.gui.MainWindow;
 import zrx.gui.informationWindow.InformationTextArea;
 import zrx.gui.tool.GUItools;
-import zrx.simulate.ImportMagnet;
 import zrx.simulate.basicDataContainer.ImportedMagnet;
 
 import java.awt.*;
@@ -35,6 +34,7 @@ public class ImportMagnetButton extends Button {
                 //唯一一個new出來的dialog
                 fileDialog = new FileDialog(MainWindow.getInstance(),"Open magnetic field data file",FileDialog.LOAD);
                 GUItools.dialogCenter(fileDialog);
+                fileDialog.setIconImage(GUItools.getIcon());
                 fileDialog.setVisible(true);
 
                 String filePath = fileDialog.getDirectory()+fileDialog.getFile();
@@ -42,7 +42,7 @@ public class ImportMagnetButton extends Button {
                 {
                     Runnable runnable = ()->{
                         try {
-                            ImportMagnet.importWithDateFilePath(fileDialog.getDirectory()+fileDialog.getFile());
+                            ImportedMagnet.importWithDateFilePath(fileDialog.getDirectory()+fileDialog.getFile());
                         }
                         catch (Exception ex){
                             InformationTextArea.getInstance().append(ex.getMessage()+"\n");

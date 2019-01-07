@@ -29,6 +29,8 @@ public class TestDialog extends Dialog {
         this.add(textArea);
         this.add(OKbutton,BorderLayout.SOUTH);
 
+        this.setIconImage(GUItools.getIcon());
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

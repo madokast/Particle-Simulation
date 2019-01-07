@@ -1,7 +1,7 @@
 package zrx.gui;
 
 import zrx.MainProcess;
-import zrx.gui.RealPlot.PlotRealSpace;
+import zrx.gui.realPlot.PlotRealSpace;
 import zrx.gui.menuBar.MyMenuBar;
 import zrx.gui.tool.GUItools;
 
@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 
 public class MainWindow extends Frame {
     //singleton
@@ -36,6 +37,8 @@ public class MainWindow extends Frame {
 
         this.setLayout(mainWindowBoxLayout);
 
+        this.setIconImage(GUItools.getIcon());
+
         this.add(ButtonsOnTop.getInstance());
         this.add(PlotRealSpace.getInstance());
         PlotRealSpace.getInstance().clear();
@@ -51,8 +54,22 @@ public class MainWindow extends Frame {
                 System.exit(0);
             }
         });
+
+        this.addWindowStateListener(new WindowStateListener() {
+            @Override
+            public void windowStateChanged(WindowEvent e) {
+                if(e.getNewState()==Frame.MAXIMIZED_BOTH)
+                {
+                    //Rectangle r = MainWindow.getInstance().getBounds();
+
+                    //PlotRealSpace.resetWidthAndHeight(r);
+                }
+            }
+        });
+
         //visible
-        this.setVisible(true);
+        //this.setVisible(true);//change at 2019年1月4日 08点44分
+        //采用Splash，main函數中控制其可視
     }
 
     private void fullScreen(Frame frame)
