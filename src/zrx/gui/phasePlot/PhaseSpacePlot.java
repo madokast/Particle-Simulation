@@ -1,6 +1,6 @@
 package zrx.gui.phasePlot;
 
-import javafx.beans.binding.When;
+//import javafx.beans.binding.When;
 import zrx.gui.previewPhasePlot.ChartCaption;
 import zrx.gui.previewPhasePlot.JfreePreviewPlotPhase;
 import zrx.gui.previewPhasePlot.MyCanvas;

@@ -1,6 +1,6 @@
 package zrx.simulate.advancedDataContainer;
 
-import com.sun.prism.shader.DrawRoundRect_LinearGradient_PAD_Loader;
+//import com.sun.prism.shader.DrawRoundRect_LinearGradient_PAD_Loader;
 import zrx.gui.realPlot.DiretionXYZ1D;
 import zrx.simulate.Geometry.Ellipse;
 import zrx.simulate.Geometry.EllipseParameter;

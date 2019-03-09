@@ -2,7 +2,7 @@ package zrx.simulate.Geometry;
 
 import zrx.simulate.basicDataStructure.TriNumberDouble;
 
-import javax.transaction.TransactionRequiredException;
+//import javax.transaction.TransactionRequiredException;
 
 public class Face3D {
     //Ax+By+Cz+D=0 (参数,A,B,C,D是描述平面空间特征的常数)
